@@ -1,0 +1,12 @@
+Nous avons choisi le langage de programmation Java pour notre application, motivés par sa solide réputation et son historique établi, soutenus par une vaste communauté de développeurs expérimentés. Cette abondance de ressources assure une résolution efficace des problèmes et confère une robustesse à notre application à long terme.
+
+Malgré la mise en avant de Kotlin par Google, nous avons opté pour Java en raison de sa stabilité et de son adaptation à nos objectifs. Bien que Kotlin présente des avantages tels que le code concis et une syntaxe moins verbeuse, notre préférence pour Java repose également sur une évaluation des inconvénients potentiels.
+
+Parmi ces inconvénients, citons le temps d'adaptation initiale requis pour les développeurs, une communauté légèrement plus petite comparée à Java, et la possibilité de nécessiter des ajustements lors de la migration d'un code existant en Java. De plus, bien que la compilation de projets Kotlin puisse être légèrement plus lente dans certains cas, ces différences de performance sont généralement minimes.
+
+En résumé, Java répond pleinement à nos besoins en offrant stabilité, durabilité et compatibilité universelle. Bien que nous reconnaissions les atouts de Kotlin, notre choix s'aligne sur une évaluation globale des avantages et des inconvénients, garantissant une décision pertinente pour notre équipe et notre projet.
+
+
+// preciser que l'équipe developpe en Java
+
+
