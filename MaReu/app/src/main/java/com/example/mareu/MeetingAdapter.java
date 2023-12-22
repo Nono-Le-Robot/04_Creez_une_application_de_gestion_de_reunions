@@ -1,5 +1,7 @@
 package com.example.mareu;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,23 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
     @Override
     public void onBindViewHolder(@NonNull MeetingHolder holder, int position) {
         Meeting currentMeeting = meetings.get(position);
-        holder.textViewHour.setText(currentMeeting.getStartMeetingHour());
-        holder.textViewSubject.setText(currentMeeting.getMeetingSubject());
+
+        holder.textViewMeetingHour.setText(currentMeeting.getStartMeetingHour() + " - " + currentMeeting.getEndMeetingHour());
+        holder.textViewMeetingSubject.setText(currentMeeting.getMeetingSubject());
+        holder.textViewMeetingPlace.setText(currentMeeting.getMeetingPlace());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MeetingDetailActivity.class);
+                intent.putExtra("meetingId", currentMeeting.getId());
+                intent.putExtra("meetingStartHour", currentMeeting.getStartMeetingHour());
+                intent.putExtra("meetingEndHour", currentMeeting.getEndMeetingHour());
+                intent.putExtra("meetingPlace", currentMeeting.getMeetingPlace());
+                intent.putExtra("meetingSubject", currentMeeting.getMeetingSubject());
+                intent.putExtra("meetingParticipants", currentMeeting.getParticipants());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -42,14 +59,16 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
     }
 
     class MeetingHolder extends RecyclerView.ViewHolder{
-        private TextView textViewHour;
-        private TextView textViewSubject;
+        private TextView textViewMeetingHour;
+        private TextView textViewMeetingSubject;
+        private TextView textViewMeetingPlace;
 
 
         public MeetingHolder(@NonNull View itemView) {
             super(itemView);
-            textViewHour = itemView.findViewById(R.id.text_view_start_meeting_hour);
-            textViewSubject = itemView.findViewById(R.id.text_view_meeting_subject);
+            textViewMeetingHour = itemView.findViewById(R.id.text_view_start_meeting_hour);
+            textViewMeetingSubject = itemView.findViewById(R.id.text_view_meeting_subject);
+            textViewMeetingPlace = itemView.findViewById(R.id.text_view_meeting_place);
         }
     }
 }

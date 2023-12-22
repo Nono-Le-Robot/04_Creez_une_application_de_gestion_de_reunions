@@ -17,18 +17,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="08:00"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="08:00 - 10:00"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/text_view_meeting_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Room 836"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/text_view_meeting_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="talk about new features"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:maxLines="1"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_toStartOf="@+id/text_view_start_meeting_hour"
-            android:layout_alignParentStart="true"/>
+            android:maxLines="1"
+            android:text="talk about new features"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
     </RelativeLayout>
