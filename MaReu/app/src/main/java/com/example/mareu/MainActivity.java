@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.inputtext.setHint("entrez un texte");
-        binding.text.setText("ookokokokok");
+        binding.button.setText("Add");
+     
     }
 }
