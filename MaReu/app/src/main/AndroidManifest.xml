@@ -13,10 +13,7 @@
         android:theme="@style/Theme.MaReu"
         tools:targetApi="31">
         <activity
-            android:name=".view.AddMeetingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".detail_reunion"
+            android:name=".MeetingDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
