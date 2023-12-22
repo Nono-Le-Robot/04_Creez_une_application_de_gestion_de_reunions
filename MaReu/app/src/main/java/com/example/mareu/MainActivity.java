@@ -14,6 +14,8 @@ import com.example.mareu.data.MeetingViewModel;
 import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.model.Meeting;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Meeting> meetings) {
                 Log.d("see_meetings", meetings.toString());
+                Collections.sort(meetings, new Comparator<Meeting>() {
+                    @Override
+                    public int compare(Meeting meeting1, Meeting meeting2) {
+                        return meeting1.getStartMeetingHour().compareTo(meeting2.getStartMeetingHour());
+                    }
+                });
                 //update recyclerview
                 adapter.setMeetings(meetings);
                 Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
