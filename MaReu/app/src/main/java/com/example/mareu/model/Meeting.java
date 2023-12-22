@@ -1,19 +1,19 @@
 package com.example.mareu.model;
 
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  * Model object representing meeting
  */
-
+@Entity(tableName = "meeting_table")
 public class Meeting {
     /** Identifier */
-    private long id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     /** Start hour of meeting */
     private String startMeetingHour;
     /** Start hour of meeting */
@@ -23,10 +23,10 @@ public class Meeting {
     /** Subject of meeting */
     private String meetingSubject;
     /** List of all participants (email) */
-    private ArrayList<String> participants;
+    private String participants;
 
-    public Meeting(long id, String startMeetingHour, String endMeetingHour, String meetingPlace, String meetingSubject, ArrayList<String> participants) {
-        this.id = id;
+    public Meeting( String startMeetingHour, String endMeetingHour, String meetingPlace, String meetingSubject, String participants) {
+
         this.startMeetingHour = startMeetingHour;
         this.endMeetingHour = endMeetingHour;
         this.meetingPlace = meetingPlace;
@@ -34,11 +34,11 @@ public class Meeting {
         this.participants = participants;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -74,11 +74,11 @@ public class Meeting {
         this.meetingPlace = meetingSubject;
     }
 
-    public ArrayList<String> getParticipants() {
+    public String getParticipants() {
         return participants;
     }
 
-    public void setParticipants(ArrayList<String> participants) {
+    public void setParticipants(String participants) {
         this.participants = participants;
     }
 
