@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.data;
 
 import android.app.Application;
 

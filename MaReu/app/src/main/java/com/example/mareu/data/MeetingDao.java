@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -24,6 +24,6 @@ public interface MeetingDao {
     @Query("DELETE FROM meeting_table")
     void deleteAllMeetings();
 
-    @Query("SELECT * FROM meeting_table ORDER by id DESC")
+    @Query("SELECT * FROM meeting_table ORDER by startMeetingHour ASC")
     LiveData<List<Meeting>> getAllMeetings();
 }

@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.data;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -23,6 +23,7 @@ public abstract class MeetingDatabase extends RoomDatabase {
         if(instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     MeetingDatabase.class, "meeting_database")
+                    .fallbackToDestructiveMigrationOnDowngrade() // Permet la migration vers des versions inférieures
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
@@ -50,6 +51,9 @@ public abstract class MeetingDatabase extends RoomDatabase {
             meetingDao.insert(new Meeting( "08:00","10:00","Room 911","Talk about new features", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
             meetingDao.insert(new Meeting( "10:00","11:00","Room 444","Marketing", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
             meetingDao.insert(new Meeting( "09:00","09:30","Room 37","Weekly standup", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
+            meetingDao.insert(new Meeting( "11:00","12:00","Room 99","Review code", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
+            meetingDao.insert(new Meeting( "16:00","17:00","Room 669","Talk about buisiness", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
+
             return null;
         }
     }

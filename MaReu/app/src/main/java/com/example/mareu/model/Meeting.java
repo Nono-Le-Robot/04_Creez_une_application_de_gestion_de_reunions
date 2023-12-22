@@ -71,7 +71,7 @@ public class Meeting {
     }
 
     public void setMeetingSubject(String meetingSubject) {
-        this.meetingPlace = meetingSubject;
+        this.meetingSubject = meetingSubject;
     }
 
     public String getParticipants() {

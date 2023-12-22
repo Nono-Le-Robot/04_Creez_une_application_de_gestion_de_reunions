@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.example.mareu.data.MeetingViewModel;
 import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.model.Meeting;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(List<Meeting> meetings) {
+                Log.d("see_meetings", meetings.toString());
                 //update recyclerview
                 adapter.setMeetings(meetings);
                 Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
