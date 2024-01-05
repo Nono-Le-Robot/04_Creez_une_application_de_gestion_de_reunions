@@ -58,6 +58,10 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
 
     }
 
+    public Meeting getMeetingAt(int position){
+        return meetings.get(position);
+    }
+
     class MeetingHolder extends RecyclerView.ViewHolder{
         private TextView textViewMeetingHour;
         private TextView textViewMeetingSubject;

@@ -9,12 +9,22 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="68dp"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="1214dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="68dp"
         app:layout_anchor="@+id/recycler_view"
         app:layout_anchorGravity="center"
         tools:listitem="@layout/meeting_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_meeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="32dp"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

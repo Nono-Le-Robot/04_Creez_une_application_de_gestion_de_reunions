@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddMeeting">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <EditText
+        android:id="@+id/edit_text_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lieu de la réunion"
+        android:inputType="text"
+        />
+
+    <EditText
+        android:id="@+id/edit_text_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sujet de la réunion"
+        android:inputType="text"
+        android:layout_marginBottom="50dp"
+        />
+
+
+    <EditText
+        android:id="@+id/edit_text_start_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="début de la réunion"
+        android:inputType="text"
+        />
+
+
+    <EditText
+        android:id="@+id/edit_text_end_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="fin de la réunion"
+        android:inputType="text"
+        />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save_meeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_save"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+        android:outlineSpotShadowColor="@color/white"
+        />
+
+</LinearLayout>
+

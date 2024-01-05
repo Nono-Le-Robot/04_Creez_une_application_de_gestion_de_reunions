@@ -45,6 +45,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
             meetingParticipants = meetingParticipants.replaceAll("\\[|\\]", "");
             List<String> participantsList = Arrays.asList(meetingParticipants.split(", "));
             for (String participant : participantsList) {
+                Log.d("participants", participant);
                 //
             }
 

@@ -23,7 +23,6 @@ public abstract class MeetingDatabase extends RoomDatabase {
         if(instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     MeetingDatabase.class, "meeting_database")
-                    .fallbackToDestructiveMigrationOnDowngrade() // Permet la migration vers des versions inférieures
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
                     .build();
