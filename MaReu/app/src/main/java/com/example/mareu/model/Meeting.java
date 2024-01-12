@@ -15,9 +15,9 @@ public class Meeting {
     @PrimaryKey(autoGenerate = true)
     private int id;
     /** Start hour of meeting */
-    private String startMeetingHour;
+    private long startMeetingHour;
     /** Start hour of meeting */
-    private String endMeetingHour;
+    private long endMeetingHour;
     /** Place of meeting */
     private String meetingPlace;
     /** Subject of meeting */
@@ -25,7 +25,7 @@ public class Meeting {
     /** List of all participants (email) */
     private String participants;
 
-    public Meeting( String startMeetingHour, String endMeetingHour, String meetingPlace, String meetingSubject, String participants) {
+    public Meeting( long startMeetingHour, long endMeetingHour, String meetingPlace, String meetingSubject, String participants) {
 
         this.startMeetingHour = startMeetingHour;
         this.endMeetingHour = endMeetingHour;
@@ -42,19 +42,19 @@ public class Meeting {
         this.id = id;
     }
 
-    public String getStartMeetingHour() {
+    public long getStartMeetingHour() {
         return startMeetingHour;
     }
 
-    public void setStartMeetingHour(String meetingHour) {
+    public void setStartMeetingHour(long meetingHour) {
         this.startMeetingHour = startMeetingHour;
     }
 
-    public String getEndMeetingHour() {
+    public long getEndMeetingHour() {
         return endMeetingHour;
     }
 
-    public void setEndMeetingHour(String endMeetingHour) {
+    public void setEndMeetingHour(long endMeetingHour) {
         this.endMeetingHour = endMeetingHour;
     }
 

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import java.util.Arrays;
@@ -17,10 +19,29 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private TextView textViewDetailMeetingHour;
     private TextView textViewDetailMeetingSubject;
     private TextView textViewDetailMeetingPlace;
+
+    private RecyclerView recyclerViewParticipants;
+    private ParticipantAdapter participantAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_detail);
+
+        recyclerViewParticipants = findViewById(R.id.recyclerViewParticipants);
+        recyclerViewParticipants.setLayoutManager(new LinearLayoutManager(this));
+
+        Intent intentParticipants = getIntent();
+        if (intentParticipants != null) {
+
+
+            String meetingParticipants = intentParticipants.getStringExtra("meetingParticipants");
+            meetingParticipants = meetingParticipants.replaceAll("\\[|\\]", "");
+            List<String> participantsList = Arrays.asList(meetingParticipants.split(", "));
+
+            // Assurez-vous que participantsList est initialisé et contient les participants
+            participantAdapter = new ParticipantAdapter(this, participantsList);
+            recyclerViewParticipants.setAdapter(participantAdapter);
+        }
 
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -45,9 +66,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
             meetingParticipants = meetingParticipants.replaceAll("\\[|\\]", "");
             List<String> participantsList = Arrays.asList(meetingParticipants.split(", "));
             for (String participant : participantsList) {
-                Log.d("participants", participant);
-                //
+                participant = participant.trim();
             }
+
 
             textViewDetailMeetingHour = findViewById(R.id.detail_meeting_hour);
             textViewDetailMeetingSubject = findViewById(R.id.detail_meeting_subject);
@@ -55,7 +76,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
             textViewDetailMeetingHour.setText(meetingStartHour + " - " + meetingEndHour);
             textViewDetailMeetingSubject.setText(meetingSubject);
-            textViewDetailMeetingPlace.setText(meetingPlace);
+            textViewDetailMeetingPlace.setText("Room " + meetingPlace);
 
         }
     }

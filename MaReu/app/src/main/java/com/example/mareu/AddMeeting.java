@@ -1,6 +1,8 @@
 package com.example.mareu;
 
 import com.example.mareu.R;
+import com.example.mareu.data.MeetingViewModel;
+import com.example.mareu.model.Meeting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,10 +25,22 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AddMeeting extends AppCompatActivity {
+
+    private MeetingViewModel meetingViewModel;
+
     public static final String EXTRA_SUBJECT =
             "com.example.mareu.EXTRA_SUBJECT";
     public static final String EXTRA_PLACE =
@@ -150,17 +165,39 @@ public class AddMeeting extends AppCompatActivity {
 
     }
 
+    private boolean isRoomAvailable(String room, long startTime, long endTime){
+        // ici c'est les valeurs de la salle a sauvegarder :
+        Log.d("debug-take", "a sauvegarder : " +" salle : " + room + " start : " + startTime + " end : " + endTime);
+
+        //verifier si une salle est déja occupée
+        meetingViewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
+        meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
+            @Override
+            public void onChanged(List<Meeting> meetings) {
+                for (Meeting meeting : meetings) {
+                    // ici j'obtien les infos des salles deja en BDD
+                    Log.d("debug-take", String.valueOf(meeting.getMeetingPlace()));
+
+                }
+
+            }
+        });
+
+
+        return false;
+    }
     private void saveMeeting(){
+        String subject = editTextSubject.getText().toString();
+        String place = editTextPlace.getText().toString();
+        long startHour = startTime;
+        long endHour = endTime;
+
+
+        //verifier que l'heure de fin est bien apres l'heure de début
         if(startTime > endTime) {
             Toast.makeText(getApplicationContext(), "L'heure de fin doit être postérieure à l'heure de début", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            String subject = editTextSubject.getText().toString();
-            String place = editTextPlace.getText().toString();
-            String startHour = textStartHour.getText().toString();
-            String endHour = textEndHour.getText().toString();
-
-            if(subject.trim().isEmpty() || place.trim().isEmpty() || startHour.trim().isEmpty() || endHour.trim().isEmpty()){
+        } else {
+            if(subject.trim().isEmpty() || place.trim().isEmpty()){
                 Toast.makeText(this, "Tout les champs doivent être remplis", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -168,8 +205,11 @@ public class AddMeeting extends AppCompatActivity {
             Intent data = new Intent();
             data.putExtra(EXTRA_SUBJECT, subject);
             data.putExtra(EXTRA_PLACE, place);
-            data.putExtra(EXTRA_START_HOUR, startHour);
-            data.putExtra(EXTRA_END_HOUR, endHour);
+            data.putExtra(EXTRA_START_HOUR, String.valueOf(startHour));
+            data.putExtra(EXTRA_END_HOUR, String.valueOf(endHour));
+
+
+            Log.d("debug-db-save", subject + "   " + place + "   " + startHour + "   " + endHour);
 
             setResult(RESULT_OK, data);
             finish();

@@ -1,0 +1,12 @@
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textViewParticipant"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:text="participant@participant.com"
+    android:layout_gravity="center_horizontal"
+    android:layout_centerHorizontal="true"
+    android:textAlignment="center"
+    android:textSize="22sp"
+    android:layout_marginTop="8dp"/>

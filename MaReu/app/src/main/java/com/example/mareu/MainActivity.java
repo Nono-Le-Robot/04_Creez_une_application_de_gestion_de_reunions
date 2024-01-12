@@ -90,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Meeting> meetings) {
                 Log.d("see_meetings", meetings.toString());
-                Collections.sort(meetings, new Comparator<Meeting>() {
-                    @Override
-                    public int compare(Meeting meeting1, Meeting meeting2) {
-                        return meeting1.getStartMeetingHour().compareTo(meeting2.getStartMeetingHour());
-                    }
-                });
+                //Collections.sort(meetings, new Comparator<Meeting>() {
+                  //  @Override
+                  //  public int compare(Meeting meeting1, Meeting meeting2) {
+                  //      return meeting1.getStartMeetingHour().compareTo(meeting2.getStartMeetingHour());
+                    //}
+                //});
                 //update recyclerview
                 adapter.setMeetings(meetings);
             }
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             String startHour = data.getStringExtra(AddMeeting.EXTRA_START_HOUR);
             String endHour = data.getStringExtra(AddMeeting.EXTRA_END_HOUR);
 
-            Meeting meeting = new Meeting(startHour,endHour,place,subject,new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString());
+            Meeting meeting = new Meeting(Long.parseLong(startHour),Long.parseLong(endHour),place,subject,new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com","test4@gmail.com","test5@gmail.com","test6@gmail.com","test7@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com")).toString());
             meetingViewModel.insert(meeting);
         }
 

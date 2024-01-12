@@ -2,6 +2,7 @@ package com.example.mareu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.mareu.model.Meeting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingHolder> {
@@ -38,17 +40,34 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
     @Override
     public void onBindViewHolder(@NonNull MeetingHolder holder, int position) {
         Meeting currentMeeting = meetings.get(position);
+        long startMilli = currentMeeting.getStartMeetingHour();
+        long endMilli = currentMeeting.getEndMeetingHour();
 
-        holder.textViewMeetingHour.setText(currentMeeting.getStartMeetingHour() + " - " + currentMeeting.getEndMeetingHour());
+        Date start = new Date(startMilli);
+        int startHeures = start.getHours();
+        int startMinutes = start.getMinutes();
+
+        Date end = new Date(endMilli);
+        int endHeures = end.getHours();
+        int endMinutes = end.getMinutes();
+
+        String formatStartHour;
+        String formatEndHour;
+
+        formatEndHour = (endHeures < 10 ? "0" : "") + endHeures + ":" + (endMinutes < 10 ? "0" : "") + endMinutes;
+        formatStartHour = (startHeures < 10 ? "0" : "") + startHeures + ":" + (startMinutes < 10 ? "0" : "") + startMinutes;
+
+
+        holder.textViewMeetingHour.setText( formatStartHour + " - " + formatEndHour);
         holder.textViewMeetingSubject.setText(currentMeeting.getMeetingSubject());
-        holder.textViewMeetingPlace.setText(currentMeeting.getMeetingPlace());
+        holder.textViewMeetingPlace.setText("Room " + currentMeeting.getMeetingPlace());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MeetingDetailActivity.class);
                 intent.putExtra("meetingId", currentMeeting.getId());
-                intent.putExtra("meetingStartHour", currentMeeting.getStartMeetingHour());
-                intent.putExtra("meetingEndHour", currentMeeting.getEndMeetingHour());
+                intent.putExtra("meetingStartHour", formatStartHour);
+                intent.putExtra("meetingEndHour", formatEndHour);
                 intent.putExtra("meetingPlace", currentMeeting.getMeetingPlace());
                 intent.putExtra("meetingSubject", currentMeeting.getMeetingSubject());
                 intent.putExtra("meetingParticipants", currentMeeting.getParticipants());
