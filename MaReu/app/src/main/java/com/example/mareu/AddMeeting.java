@@ -6,16 +6,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.Calendar;
 
 public class AddMeeting extends AppCompatActivity {
     public static final String EXTRA_SUBJECT =
@@ -29,10 +37,15 @@ public class AddMeeting extends AppCompatActivity {
 
     private EditText editTextPlace;
     private EditText editTextSubject;
-    private EditText editTextStartHour;
-    private EditText editTextEndHour;
-
+    private TextView textStartHour;
+    private TextView textEndHour;
+    private Button setStartHourBtn;
+    private Button setEndHourBtn;
     private FloatingActionButton btnSaveMeeting;
+
+    private long startTime;
+
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +65,40 @@ public class AddMeeting extends AppCompatActivity {
 
         editTextPlace = findViewById(R.id.edit_text_place);
         editTextSubject = findViewById(R.id.edit_text_subject);
-        editTextStartHour = findViewById(R.id.edit_text_start_hour);
-        editTextEndHour = findViewById(R.id.edit_text_end_hour);
+        textStartHour = findViewById(R.id.edit_text_start_hour);
+        textEndHour = findViewById(R.id.edit_text_end_hour);
 
+        setStartHourBtn = findViewById(R.id.set_start_hour_btn);
+        setEndHourBtn = findViewById(R.id.set_end_hour_btn);
         btnSaveMeeting = findViewById(R.id.btn_save_meeting);
+
+        textStartHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("click-debug", "clickeeeedddd");
+                openTimePickerDialog("start");
+            }
+        });
+
+        textEndHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimePickerDialog("end");
+            }
+        });
+
+        setStartHourBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimePickerDialog("start");
+            }
+        });
+        setEndHourBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimePickerDialog("end");
+            }
+        });
 
         btnSaveMeeting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,29 +109,71 @@ public class AddMeeting extends AppCompatActivity {
         });
     }
 
-    private void saveMeeting(){
-        String subject = editTextSubject.getText().toString();
-        String place = editTextPlace.getText().toString();
-        String startHour = editTextStartHour.getText().toString();
-        String endHour = editTextEndHour.getText().toString();
+    private void openTimePickerDialog(String tag){
 
-        if(subject.trim().isEmpty() || place.trim().isEmpty() || startHour.trim().isEmpty() || endHour.trim().isEmpty()){
-            Toast.makeText(this, "Tout les champs doivent être remplis", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
 
-        Intent data = new Intent();
-        data.putExtra(EXTRA_SUBJECT, subject);
-        data.putExtra(EXTRA_PLACE, place);
-        data.putExtra(EXTRA_START_HOUR, startHour);
-        data.putExtra(EXTRA_END_HOUR, endHour);
+        TimePickerDialog myTimePicker;
 
-        setResult(RESULT_OK, data);
-        finish();
-        Log.d("test", "okokokokokokokok");
+        myTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if (tag.equals("start")){
+                    startTime = convertToMillis(hourOfDay, minute);
+                    textStartHour.setText(formatTime(hourOfDay, minute));
+                }
+                if (tag.equals("end")){
+                    endTime = convertToMillis(hourOfDay, minute);
+                    textEndHour.setText(formatTime(hourOfDay, minute));
+                }
+            }
+
+            private long convertToMillis(int hourOfDay, int minute) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                return calendar.getTimeInMillis();
+            }
+
+            private String formatTime(int hourOfDay, int minute) {
+                String minuteString = (minute < 10) ? "0" + minute : String.valueOf(minute);
+                return hourOfDay + " : " + minuteString;
+            }
+
+        },hour,min, true);
+        myTimePicker.show();
 
 
     }
 
+    private void saveMeeting(){
+        if(startTime > endTime) {
+            Toast.makeText(getApplicationContext(), "L'heure de fin doit être postérieure à l'heure de début", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String subject = editTextSubject.getText().toString();
+            String place = editTextPlace.getText().toString();
+            String startHour = textStartHour.getText().toString();
+            String endHour = textEndHour.getText().toString();
+
+            if(subject.trim().isEmpty() || place.trim().isEmpty() || startHour.trim().isEmpty() || endHour.trim().isEmpty()){
+                Toast.makeText(this, "Tout les champs doivent être remplis", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent data = new Intent();
+            data.putExtra(EXTRA_SUBJECT, subject);
+            data.putExtra(EXTRA_PLACE, place);
+            data.putExtra(EXTRA_START_HOUR, startHour);
+            data.putExtra(EXTRA_END_HOUR, endHour);
+
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
 }
 

@@ -12,6 +12,26 @@
         android:layout_height="100dp"
         android:padding="8dp">
 
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/deleteIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/ic_delete"
+            app:backgroundTint="@android:color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:rippleColor="@android:color/transparent"
+            android:contentDescription="Supprimer la réunion"
+            app:tint="#D60101"
+            android:outlineAmbientShadowColor="@color/white"
+            android:outlineSpotShadowColor="@color/white"
+            />
+
         <TextView
             android:id="@+id/text_view_start_meeting_hour"
             android:layout_width="wrap_content"
@@ -43,7 +63,9 @@
             android:layout_toStartOf="@+id/text_view_start_meeting_hour"
             android:maxLines="1"
             android:text="talk about new features"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            />
+
 
 
     </RelativeLayout>

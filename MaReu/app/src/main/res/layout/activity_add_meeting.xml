@@ -16,6 +16,10 @@
         android:layout_height="wrap_content"
         android:hint="Lieu de la réunion"
         android:inputType="text"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
         />
 
     <EditText
@@ -24,25 +28,47 @@
         android:layout_height="wrap_content"
         android:hint="Sujet de la réunion"
         android:inputType="text"
-        android:layout_marginBottom="50dp"
+        android:textSize="22sp"
+        android:textAlignment="center"
         />
 
+    <Button
+        android:id="@+id/set_start_hour_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Start Hour"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"></Button>
 
-    <EditText
+    <TextView
         android:id="@+id/edit_text_start_hour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="début de la réunion"
-        android:inputType="text"
+        android:hint="Start at : 00:00"
+        android:inputType="time"
+        android:textSize="22sp"
+        android:textAlignment="center"
         />
 
+    <Button
+        android:id="@+id/set_end_hour_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set End Hour"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"></Button>
 
-    <EditText
+
+    <TextView
         android:id="@+id/edit_text_end_hour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="fin de la réunion"
-        android:inputType="text"
+        android:hint="End at : 00:00"
+        android:inputType="time"
+        android:textSize="22sp"
+        android:textAlignment="center"
         />
 
 
@@ -53,7 +79,11 @@
         android:src="@drawable/ic_save"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:outlineAmbientShadowColor="@color/white"
         android:outlineSpotShadowColor="@color/white"
+        android:contentDescription="Save meeting"
+
         />
 
 </LinearLayout>

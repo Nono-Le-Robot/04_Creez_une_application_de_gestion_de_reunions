@@ -77,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
 
         MeetingAdapter adapter = new MeetingAdapter();
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new MeetingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                meetingViewModel.delete(adapter.getMeetingAt(position));
+                Toast.makeText(MainActivity.this, "Meeting deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         meetingViewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
         meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
@@ -93,19 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setMeetings(meetings);
             }
         });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                meetingViewModel.delete(adapter.getMeetingAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(MainActivity.this, "Meeting deleted", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(recyclerView);
     }
 
 
@@ -124,13 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
             Meeting meeting = new Meeting(startHour,endHour,place,subject,new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString());
             meetingViewModel.insert(meeting);
-
-            Toast.makeText(this, "Meeting saved", Toast.LENGTH_SHORT).show();
         }
 
-        else{
-            Toast.makeText(this, "Error saving meeting", Toast.LENGTH_SHORT).show();
-        }
     }
 
 

@@ -11,18 +11,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.model.Meeting;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingHolder> {
 
+    private  OnItemClickListener listener;
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener){
+        listener = clickListener;
+
+    }
     private List<Meeting> meetings = new ArrayList<>();
     @NonNull
     @Override
     public MeetingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.meeting_item, parent, false);
-        return new MeetingHolder(itemView);
+        return new MeetingHolder(itemView, listener);
     }
 
     @Override
@@ -67,12 +77,22 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
         private TextView textViewMeetingSubject;
         private TextView textViewMeetingPlace;
 
+        private FloatingActionButton deleteBtn;
 
-        public MeetingHolder(@NonNull View itemView) {
+
+        public MeetingHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             textViewMeetingHour = itemView.findViewById(R.id.text_view_start_meeting_hour);
             textViewMeetingSubject = itemView.findViewById(R.id.text_view_meeting_subject);
             textViewMeetingPlace = itemView.findViewById(R.id.text_view_meeting_place);
+            deleteBtn = itemView.findViewById(R.id.deleteIcon);
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(getAdapterPosition());
+                }
+            });
         }
     }
 }
