@@ -129,7 +129,7 @@ public class AddMeeting extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
-        //TODO : verifier qu'il y a une marge de sécurité si on ajoute une nouvelle réunion
+        //TODO : verifier qu'il y a une sécurité si on ajoute une nouvelle réunion
 
         TimePickerDialog myTimePicker;
 
