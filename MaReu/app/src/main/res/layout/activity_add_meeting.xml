@@ -71,6 +71,33 @@
         android:textAlignment="center"
         />
 
+    <TextView
+        android:id="@+id/text_add_participant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Add participant"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:layout_marginTop="40dp"
+        />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_participant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="20dp"
+        android:outlineAmbientShadowColor="@color/white"
+        android:outlineSpotShadowColor="@color/white"
+        android:contentDescription="Save meeting"
+
+        />
+
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_save_meeting"
@@ -85,6 +112,7 @@
         android:contentDescription="Save meeting"
 
         />
+
 
 </LinearLayout>
 

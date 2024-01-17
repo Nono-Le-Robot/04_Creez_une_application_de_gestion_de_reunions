@@ -6,15 +6,19 @@ import com.example.mareu.model.Meeting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,6 +60,7 @@ public class AddMeeting extends AppCompatActivity {
     private TextView textEndHour;
     private Button setStartHourBtn;
     private Button setEndHourBtn;
+    private Button btnAddParticipant;
     private FloatingActionButton btnSaveMeeting;
 
     private long startTime;
@@ -85,6 +90,7 @@ public class AddMeeting extends AppCompatActivity {
 
         setStartHourBtn = findViewById(R.id.set_start_hour_btn);
         setEndHourBtn = findViewById(R.id.set_end_hour_btn);
+        btnAddParticipant = findViewById(R.id.btn_add_participant);
         btnSaveMeeting = findViewById(R.id.btn_save_meeting);
 
         textStartHour.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +125,14 @@ public class AddMeeting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              saveMeeting();
+
+            }
+        });
+
+        btnAddParticipant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ajouter la logique pour ajouter un participant
 
             }
         });
