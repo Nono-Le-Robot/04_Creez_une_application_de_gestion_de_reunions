@@ -60,7 +60,7 @@ public class AddMeeting extends AppCompatActivity {
     private TextView textEndHour;
     private Button setStartHourBtn;
     private Button setEndHourBtn;
-    private Button btnAddParticipant;
+    private FloatingActionButton btnAddParticipant;
     private FloatingActionButton btnSaveMeeting;
 
     private long startTime;
@@ -133,6 +133,7 @@ public class AddMeeting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //ajouter la logique pour ajouter un participant
+                showAddParticipantDialog();
 
             }
         });
@@ -173,17 +174,12 @@ public class AddMeeting extends AppCompatActivity {
                 String minuteString = (minute < 10) ? "0" + minute : String.valueOf(minute);
                 return hourOfDay + " : " + minuteString;
             }
-
         },hour,min, true);
         myTimePicker.show();
-
-
     }
-
     private boolean isRoomAvailable(String room, long startTime, long endTime){
         // ici c'est les valeurs de la salle a sauvegarder :
         Log.d("debug-take", "a sauvegarder : " +" salle : " + room + " start : " + startTime + " end : " + endTime);
-
         //verifier si une salle est déja occupée
         meetingViewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
         meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
@@ -192,15 +188,48 @@ public class AddMeeting extends AppCompatActivity {
                 for (Meeting meeting : meetings) {
                     // ici j'obtien les infos des salles deja en BDD
                     Log.d("debug-take", String.valueOf(meeting.getMeetingPlace()));
-
                 }
-
             }
         });
-
-
         return false;
     }
+
+    private void showAddParticipantDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ajouter un participant");
+        // Créez une vue personnalisée pour la boîte de dialogue
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_participant, null);
+        EditText editTextEmail = view.findViewById(R.id.edit_text_email);
+        builder.setView(view);
+        builder.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String email = editTextEmail.getText().toString().trim();
+                // Vérifiez si l'adresse e-mail est valide (ajoutez votre logique de validation si nécessaire)
+                if (!TextUtils.isEmpty(email)) {
+                    Toast.makeText(AddMeeting.this, "Participant ajouté : " + email, Toast.LENGTH_SHORT).show();
+                    //TODO : ici ajouter la logique pour ajouter l'adresse mail a la liste des participants avant de save.
+                } else {
+                    Toast.makeText(AddMeeting.this, "Veuillez entrer une adresse e-mail valide", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
+
+
+
+
     private void saveMeeting(){
         String subject = editTextSubject.getText().toString();
         String place = editTextPlace.getText().toString();
