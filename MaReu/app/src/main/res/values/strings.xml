@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">MaReu</string>
+    <string name="app_name"></string>
     <string name="btn_add">+</string>
+    <string name="select_search_type">Select search type</string>
+
+    <array name="search_types">
+        <item>Room Number</item>
+        <item>Meeting Subject</item>
+    </array>
 </resources>

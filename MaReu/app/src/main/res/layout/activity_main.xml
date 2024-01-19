@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <include layout="@layout/toolbar_layout" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="68dp"
-        app:layout_anchor="@+id/recycler_view"
-        app:layout_anchorGravity="center"
-        tools:listitem="@layout/meeting_item" />
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="68dp"
+                android:layout_marginBottom="10dp"
+                android:paddingBottom="40dp"
+                app:layout_anchorGravity="center"
+                tools:listitem="@layout/meeting_item" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <include layout="@layout/toolbar_layout_main" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add_meeting"
@@ -27,7 +40,6 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        />
+        android:outlineSpotShadowColor="@color/white" />
 
 </RelativeLayout>

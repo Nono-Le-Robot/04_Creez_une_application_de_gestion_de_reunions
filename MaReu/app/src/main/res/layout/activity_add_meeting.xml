@@ -1,118 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AddMeeting">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_layout" />
-
-    <EditText
-        android:id="@+id/edit_text_place"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Room number"
-        android:inputType="number"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <EditText
-        android:id="@+id/edit_text_subject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Meeting Subject"
-        android:inputType="text"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".AddMeeting">
 
-    <Button
-        android:id="@+id/set_start_hour_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set Start Hour"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"></Button>
+            <include layout="@layout/toolbar_layout_save" />
 
-    <TextView
-        android:id="@+id/edit_text_start_hour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Start at : 00:00"
-        android:inputType="time"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        />
+            <EditText
+                android:id="@+id/edit_text_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Room number"
+                android:inputType="number"
+                android:textSize="22sp"
+                android:textAlignment="center"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp" />
 
-    <Button
-        android:id="@+id/set_end_hour_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set End Hour"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"></Button>
+            <EditText
+                android:id="@+id/edit_text_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Meeting Subject"
+                android:inputType="text"
+                android:textSize="22sp"
+                android:textAlignment="center" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:baselineAligned="true"
+                android:layout_marginTop="60dp"
+                >
 
-    <TextView
-        android:id="@+id/edit_text_end_hour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End at : 00:00"
-        android:inputType="time"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        />
+                <Button
+                    android:id="@+id/set_start_hour_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set Start Hour"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="22dp"/>
 
-    <TextView
-        android:id="@+id/text_add_participant"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Add participant"
-        android:textSize="22sp"
-        android:textAlignment="center"
-        android:layout_marginTop="40dp"
-        />
+                <Button
+                    android:id="@+id/set_end_hour_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set End Hour"
+                    android:layout_gravity="center"/>
 
+            </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_participant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="20dp"
-        android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        android:contentDescription="Save meeting"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp">
 
-        />
+                <TextView
+                    android:id="@+id/edit_text_start_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="33sp"
+                    android:textAlignment="center"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  ====>  "
+                    android:textSize="22sp"
+                    android:textAlignment="center"
+                    android:translationY="-5dp"/>
 
+                <TextView
+                    android:id="@+id/edit_text_end_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="33sp"
+                    android:textAlignment="center"/>
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save_meeting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_save"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        android:contentDescription="Save meeting"
-
-        />
+            </LinearLayout>
 
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/text_participants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="List of participants :"
+                android:textSize="22sp"
+                android:textAlignment="center"
+                android:layout_marginBottom="10dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewAddParticipants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="4"
+                tools:listitem="@layout/participant_item" />
+
+            <Button
+                android:id="@+id/btn_add_participant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Participant"
+                android:layout_gravity="bottom|center"
+               android:layout_marginTop="20dp"
+                android:outlineAmbientShadowColor="@color/white"
+                android:outlineSpotShadowColor="@color/white"
+                android:contentDescription="Add participant" />
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+    <include layout="@layout/toolbar_layout_save" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

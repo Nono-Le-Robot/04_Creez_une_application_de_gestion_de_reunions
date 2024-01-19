@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingHolder> {
+public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingHolder> implements Filterable {
 
     private  OnItemClickListener listener;
     public interface OnItemClickListener{
@@ -29,7 +31,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
         listener = clickListener;
 
     }
+
     private List<Meeting> meetings = new ArrayList<>();
+    private List<Meeting> meetingsFull = new ArrayList<>();
+
+    private int searchForType;
     @NonNull
     @Override
     public MeetingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,8 +87,55 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
         return meetings.size();
     }
 
+    public Filter getFilter(){
+        Log.d("filteredMeetings", filteredMeetings.toString());
+        return filteredMeetings;
+    }
+
+    public void searchForType(int idType){
+        // 0 : room number
+        // 1 : subject
+        this.searchForType = idType;
+    }
+
+    private Filter filteredMeetings = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Meeting> filteredList = new ArrayList<>();
+
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(meetingsFull);
+            }
+            else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(Meeting meeting : meetingsFull){
+
+                    if(meeting.getMeetingPlace().toLowerCase().contains(filterPattern) && searchForType == 0){
+                        filteredList.add(meeting);
+                    }
+
+                    if(meeting.getMeetingSubject().toLowerCase().contains(filterPattern) && searchForType == 1){
+                        filteredList.add(meeting);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            meetings.clear();
+            meetings.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     public void setMeetings(List<Meeting> meetings){
         this.meetings = meetings;
+        this.meetingsFull = new ArrayList<>(meetings);
         notifyDataSetChanged();
 
     }

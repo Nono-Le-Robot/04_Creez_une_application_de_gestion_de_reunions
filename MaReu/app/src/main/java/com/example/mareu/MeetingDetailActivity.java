@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,9 +21,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private TextView textViewDetailMeetingHour;
     private TextView textViewDetailMeetingSubject;
     private TextView textViewDetailMeetingPlace;
-
     private RecyclerView recyclerViewParticipants;
     private ParticipantAdapter participantAdapter;
+    private FloatingActionButton buttonGoBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,28 +34,18 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         Intent intentParticipants = getIntent();
         if (intentParticipants != null) {
-
-
             String meetingParticipants = intentParticipants.getStringExtra("meetingParticipants");
             meetingParticipants = meetingParticipants.replaceAll("\\[|\\]", "");
             List<String> participantsList = Arrays.asList(meetingParticipants.split(", "));
 
-            // Assurez-vous que participantsList est initialisé et contient les participants
             participantAdapter = new ParticipantAdapter(this, participantsList);
             recyclerViewParticipants.setAdapter(participantAdapter);
         }
 
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        Toolbar toolbar = findViewById(R.id.back_toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        // Centrer le titre dans la Toolbar
         Intent intent = getIntent();
         if (intent != null) {
             int meetingId = intent.getIntExtra("meetingId", 0);
@@ -69,7 +61,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 participant = participant.trim();
             }
 
-
             textViewDetailMeetingHour = findViewById(R.id.detail_meeting_hour);
             textViewDetailMeetingSubject = findViewById(R.id.detail_meeting_subject);
             textViewDetailMeetingPlace = findViewById(R.id.detail_meeting_place);
@@ -77,7 +68,10 @@ public class MeetingDetailActivity extends AppCompatActivity {
             textViewDetailMeetingHour.setText(meetingStartHour + " - " + meetingEndHour);
             textViewDetailMeetingSubject.setText(meetingSubject);
             textViewDetailMeetingPlace.setText("Room " + meetingPlace);
-
         }
+    }
+
+    public void goBack(View view) {
+        onBackPressed();
     }
 }

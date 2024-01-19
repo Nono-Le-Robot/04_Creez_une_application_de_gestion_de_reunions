@@ -1,21 +1,23 @@
 package com.example.mareu;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mareu.data.MeetingViewModel;
@@ -23,15 +25,13 @@ import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.model.Meeting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final int ADD_MEETING_REQUEST = 1;
     private MeetingViewModel meetingViewModel;
+
+    private MeetingAdapter adapter;
     ActivityMainBinding binding;
 
     @Override
@@ -49,33 +49,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage("Souhaitez-vous vraiment quitter l'application ?")
-                        .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                finish(); // Ferme l'activité (et l'application si c'est la seule activité)
-                            }
-                        })
-                        .setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss(); // Ferme la boîte de dialogue
-                            }
-                        });
-                builder.create().show();
-            }
-        });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        MeetingAdapter adapter = new MeetingAdapter();
+        adapter = new MeetingAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new MeetingAdapter.OnItemClickListener() {
             @Override
@@ -98,11 +80,86 @@ public class MainActivity extends AppCompatActivity {
                 //});
                 //update recyclerview
                 adapter.setMeetings(meetings);
+
             }
+
+            public MeetingAdapter test = adapter;
         });
     }
 
+    public void goBack(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setMessage("Souhaitez-vous vraiment quitter l'application ?")
+                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish(); // Ferme l'activité (et l'application si c'est la seule activité)
+                    }
+                })
+                .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss(); // Ferme la boîte de dialogue
+                    }
+                });
+        builder.create().show();
+    }
 
+    public void searchFor(View view){
+        showSearchForDialog();
+
+
+    }
+
+    private void showSearchForDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_search, null);
+
+        Spinner spinnerSearchType = view.findViewById(R.id.spinner_search_type);
+        EditText editTextSearch = view.findViewById(R.id.edit_text_searchFor);
+
+        builder.setView(view);
+
+        builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Spinner selectedPosition = spinnerSearchType;
+
+                String searchText = editTextSearch.getText().toString();
+
+                if (TextUtils.isEmpty(searchText)) {
+                    Toast.makeText(MainActivity.this, "Please enter a search query", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+
+
+                if (selectedPosition.getSelectedItem().equals("Room Number")) {
+                    adapter.searchForType(0);
+                    adapter.getFilter().filter(searchText);
+                }
+
+                if (selectedPosition.getSelectedItem().equals("Meeting Subject")) {
+                    adapter.searchForType(1);
+                    adapter.getFilter().filter(searchText);
+                }
+
+
+
+
+            }
+        });
+
+        builder.setNegativeButton("Reset", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.getFilter().filter("");
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
     @Override
@@ -115,8 +172,11 @@ public class MainActivity extends AppCompatActivity {
             String place = data.getStringExtra(AddMeeting.EXTRA_PLACE);
             String startHour = data.getStringExtra(AddMeeting.EXTRA_START_HOUR);
             String endHour = data.getStringExtra(AddMeeting.EXTRA_END_HOUR);
+            String participants = data.getStringExtra(AddMeeting.EXTRA_PARTICIPANTS);
+            Log.d("participants", participants);
 
-            Meeting meeting = new Meeting(Long.parseLong(startHour),Long.parseLong(endHour),place,subject,new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com","test4@gmail.com","test5@gmail.com","test6@gmail.com","test7@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com","test3@gmail.com")).toString());
+
+            Meeting meeting = new Meeting(Long.parseLong(startHour),Long.parseLong(endHour),place,subject,participants);
             meetingViewModel.insert(meeting);
         }
 

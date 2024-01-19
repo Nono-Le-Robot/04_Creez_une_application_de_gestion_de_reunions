@@ -31,9 +31,14 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,14 +59,24 @@ public class AddMeeting extends AppCompatActivity {
     public static final String EXTRA_END_HOUR =
             "com.example.mareu.EXTRA_END_HOUR";
 
+    public static final String EXTRA_PARTICIPANTS =
+            "com.example.mareu.EXTRA_PARTICIPANTS";
+
     private EditText editTextPlace;
     private EditText editTextSubject;
     private TextView textStartHour;
     private TextView textEndHour;
     private Button setStartHourBtn;
     private Button setEndHourBtn;
-    private FloatingActionButton btnAddParticipant;
+    private Button btnAddParticipant;
     private FloatingActionButton btnSaveMeeting;
+
+    private RecyclerView recyclerViewAddParticipants;
+    private ParticipantAdapter participantAdapter;
+
+    private FloatingActionButton btnFilter;
+
+    List<String> participants = new ArrayList<>();
 
     private long startTime;
 
@@ -72,15 +87,13 @@ public class AddMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meeting);
 
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        recyclerViewAddParticipants = findViewById(R.id.recyclerViewAddParticipants);
+        recyclerViewAddParticipants.setLayoutManager(new LinearLayoutManager(this));
+
+        Toolbar toolbar = findViewById(R.id.save_toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
 
         editTextPlace = findViewById(R.id.edit_text_place);
@@ -91,56 +104,36 @@ public class AddMeeting extends AppCompatActivity {
         setStartHourBtn = findViewById(R.id.set_start_hour_btn);
         setEndHourBtn = findViewById(R.id.set_end_hour_btn);
         btnAddParticipant = findViewById(R.id.btn_add_participant);
-        btnSaveMeeting = findViewById(R.id.btn_save_meeting);
 
         textStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("click-debug", "clickeeeedddd");
-                openTimePickerDialog("start");
-            }
+            public void onClick(View v) {openTimePickerDialog("start");}
         });
 
         textEndHour.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openTimePickerDialog("end");
-            }
+            public void onClick(View v) {openTimePickerDialog("end");}
         });
 
         setStartHourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openTimePickerDialog("start");
-            }
+            public void onClick(View v) {openTimePickerDialog("start");}
         });
         setEndHourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openTimePickerDialog("end");
-            }
-        });
-
-        btnSaveMeeting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             saveMeeting();
-
-            }
+            public void onClick(View v) {openTimePickerDialog("end");}
         });
 
         btnAddParticipant.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //ajouter la logique pour ajouter un participant
-                showAddParticipantDialog();
-
-            }
+            public void onClick(View v) {showAddParticipantDialog();}
         });
     }
 
-    private void openTimePickerDialog(String tag){
 
+
+    private void openTimePickerDialog(String tag){
+        clearFocusInput();
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
@@ -172,7 +165,7 @@ public class AddMeeting extends AppCompatActivity {
 
             private String formatTime(int hourOfDay, int minute) {
                 String minuteString = (minute < 10) ? "0" + minute : String.valueOf(minute);
-                return hourOfDay + " : " + minuteString;
+                return hourOfDay + ":" + minuteString;
             }
         },hour,min, true);
         myTimePicker.show();
@@ -201,20 +194,24 @@ public class AddMeeting extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_participant, null);
         EditText editTextEmail = view.findViewById(R.id.edit_text_email);
         builder.setView(view);
-        builder.setPositiveButton("Ajouter", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Add participant", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                clearFocusInput();
                 String email = editTextEmail.getText().toString().trim();
-                // Vérifiez si l'adresse e-mail est valide (ajoutez votre logique de validation si nécessaire)
                 if (!TextUtils.isEmpty(email)) {
-                    Toast.makeText(AddMeeting.this, "Participant ajouté : " + email, Toast.LENGTH_SHORT).show();
-                    //TODO : ici ajouter la logique pour ajouter l'adresse mail a la liste des participants avant de save.
+                    participants.add(email);
+                    participantAdapter = new ParticipantAdapter(getApplicationContext(), participants);
+                    recyclerViewAddParticipants.setAdapter(participantAdapter);
+                    Toast.makeText(AddMeeting.this, "Added participant : " + email, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AddMeeting.this, "Veuillez entrer une adresse e-mail valide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMeeting.this, "invalid e-mail", Toast.LENGTH_SHORT).show();
                 }
+
             }
+
         });
-        builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -227,10 +224,16 @@ public class AddMeeting extends AppCompatActivity {
 
 
 
+    private void clearFocusInput() {
+        editTextSubject.clearFocus();
+        editTextPlace.clearFocus();
+    }
 
+    public void goBack(View view) {
+        onBackPressed();
+    }
 
-
-    private void saveMeeting(){
+    public void saveMeeting(View view){
         String subject = editTextSubject.getText().toString();
         String place = editTextPlace.getText().toString();
         long startHour = startTime;
@@ -251,6 +254,7 @@ public class AddMeeting extends AppCompatActivity {
             data.putExtra(EXTRA_PLACE, place);
             data.putExtra(EXTRA_START_HOUR, String.valueOf(startHour));
             data.putExtra(EXTRA_END_HOUR, String.valueOf(endHour));
+            data.putExtra(EXTRA_PARTICIPANTS, String.valueOf(participants));
 
 
             Log.d("debug-db-save", subject + "   " + place + "   " + startHour + "   " + endHour);
