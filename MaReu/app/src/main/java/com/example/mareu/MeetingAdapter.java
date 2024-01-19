@@ -93,8 +93,8 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
     }
 
     public void searchForType(int idType){
-        // 0 : room number
-        // 1 : subject
+        // 0 : meeting subject
+        // 1 : room number
         this.searchForType = idType;
     }
 
@@ -111,11 +111,11 @@ public class MeetingAdapter extends RecyclerView.Adapter<MeetingAdapter.MeetingH
 
                 for(Meeting meeting : meetingsFull){
 
-                    if(meeting.getMeetingPlace().toLowerCase().contains(filterPattern) && searchForType == 0){
+                    if(meeting.getMeetingSubject().toLowerCase().contains(filterPattern) && searchForType == 0){
                         filteredList.add(meeting);
                     }
 
-                    if(meeting.getMeetingSubject().toLowerCase().contains(filterPattern) && searchForType == 1){
+                    if(meeting.getMeetingPlace().toLowerCase().contains(filterPattern) && searchForType == 1){
                         filteredList.add(meeting);
                     }
                 }

@@ -4,7 +4,7 @@
     <string name="select_search_type">Select search type</string>
 
     <array name="search_types">
-        <item>Room Number</item>
         <item>Meeting Subject</item>
+        <item>Room Number</item>
     </array>
 </resources>

@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -115,9 +117,16 @@ public class MainActivity extends AppCompatActivity {
 
         Spinner spinnerSearchType = view.findViewById(R.id.spinner_search_type);
         EditText editTextSearch = view.findViewById(R.id.edit_text_searchFor);
-
+        spinnerSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(position == 1) editTextSearch.setInputType(InputType.TYPE_CLASS_NUMBER);
+                else editTextSearch.setInputType(InputType.TYPE_CLASS_TEXT);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
         builder.setView(view);
-
         builder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -126,22 +135,21 @@ public class MainActivity extends AppCompatActivity {
                 String searchText = editTextSearch.getText().toString();
 
                 if (TextUtils.isEmpty(searchText)) {
-                    Toast.makeText(MainActivity.this, "Please enter a search query", Toast.LENGTH_SHORT).show();
+                    adapter.getFilter().filter("");
                     return;
                 }
 
-
-
-
-                if (selectedPosition.getSelectedItem().equals("Room Number")) {
+                if (selectedPosition.getSelectedItem().equals("Meeting Subject")) {
                     adapter.searchForType(0);
                     adapter.getFilter().filter(searchText);
                 }
 
-                if (selectedPosition.getSelectedItem().equals("Meeting Subject")) {
+                if (selectedPosition.getSelectedItem().equals("Room Number")) {
                     adapter.searchForType(1);
                     adapter.getFilter().filter(searchText);
                 }
+
+
 
 
 
