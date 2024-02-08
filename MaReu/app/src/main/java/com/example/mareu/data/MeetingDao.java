@@ -24,6 +24,6 @@ public interface MeetingDao {
     @Query("DELETE FROM meeting_table")
     void deleteAllMeetings();
 
-    @Query("SELECT * FROM meeting_table ORDER by id ASC")
+    @Query("SELECT * FROM meeting_table")
     LiveData<List<Meeting>> getAllMeetings();
 }

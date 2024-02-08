@@ -6,5 +6,8 @@
     <array name="search_types">
         <item>Meeting Subject</item>
         <item>Room Number</item>
+        <item>Participant</item>
+        <item>Start at</item>
+        <item>End at</item>
     </array>
 </resources>

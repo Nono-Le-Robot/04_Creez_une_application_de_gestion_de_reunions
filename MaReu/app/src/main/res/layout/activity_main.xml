@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -29,8 +28,6 @@
         </RelativeLayout>
     </ScrollView>
 
-    <include layout="@layout/toolbar_layout_main" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add_meeting"
         android:layout_width="wrap_content"
@@ -41,5 +38,7 @@
         android:layout_margin="16dp"
         android:outlineAmbientShadowColor="@color/white"
         android:outlineSpotShadowColor="@color/white" />
+
+    <include layout="@layout/toolbar_layout_main" />
 
 </RelativeLayout>

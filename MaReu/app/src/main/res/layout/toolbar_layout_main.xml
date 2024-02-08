@@ -32,40 +32,42 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filter_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/search_btn"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_filter"
-        app:tint="#FFFFFF"
-        app:backgroundTint="@android:color/transparent"
-        app:borderWidth="0dp"
-        app:elevation="0dp"
-        app:rippleColor="@android:color/transparent"
-        android:contentDescription="Filter"
-        android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        />
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+              android:id="@+id/reset_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_toLeftOf="@id/search_btn"
+              android:layout_centerVertical="true"
+              android:src="@drawable/ic_reset"
+              app:tint="#FFFFFF"
+              app:backgroundTint="@android:color/transparent"
+              app:borderWidth="0dp"
+              app:elevation="0dp"
+              app:rippleColor="@android:color/transparent"
+              android:contentDescription="Filter"
+              android:outlineAmbientShadowColor="@color/white"
+              android:outlineSpotShadowColor="@color/white"
+              android:onClick="resetFilter"
+              />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/search_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_search"
-        app:tint="#FFFFFF"
-        app:backgroundTint="@android:color/transparent"
-        app:borderWidth="0dp"
-        app:elevation="0dp"
-        app:rippleColor="@android:color/transparent"
-        android:contentDescription="Search"
-        android:outlineAmbientShadowColor="@color/white"
-        android:outlineSpotShadowColor="@color/white"
-        android:onClick="searchFor"
-        />
-    </RelativeLayout>
 
-</androidx.appcompat.widget.Toolbar>
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/search_btn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:layout_centerVertical="true"
+          android:src="@drawable/ic_search"
+          app:tint="#FFFFFF"
+          app:backgroundTint="@android:color/transparent"
+          app:borderWidth="0dp"
+          app:elevation="0dp"
+          app:rippleColor="@android:color/transparent"
+          android:contentDescription="Search"
+          android:outlineAmbientShadowColor="@color/white"
+          android:outlineSpotShadowColor="@color/white"
+          android:onClick="searchFor"
+          />
+      </RelativeLayout>
+
+  </androidx.appcompat.widget.Toolbar>

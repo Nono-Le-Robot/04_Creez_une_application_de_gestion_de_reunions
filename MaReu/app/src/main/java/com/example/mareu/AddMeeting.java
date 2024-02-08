@@ -16,6 +16,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,63 +50,63 @@ import java.util.List;
 import java.util.Locale;
 
 public class AddMeeting extends AppCompatActivity {
-
     private MeetingViewModel meetingViewModel;
+    public static final String EXTRA_SUBJECT = "com.example.mareu.EXTRA_SUBJECT";
+    public static final String EXTRA_PLACE = "com.example.mareu.EXTRA_PLACE";
+    public static final String EXTRA_START_HOUR = "com.example.mareu.EXTRA_START_HOUR";
+    public static final String EXTRA_END_HOUR = "com.example.mareu.EXTRA_END_HOUR";
+    public static final String EXTRA_PARTICIPANTS = "com.example.mareu.EXTRA_PARTICIPANTS";
 
-    public static final String EXTRA_SUBJECT =
-            "com.example.mareu.EXTRA_SUBJECT";
-    public static final String EXTRA_PLACE =
-            "com.example.mareu.EXTRA_PLACE";
-    public static final String EXTRA_START_HOUR =
-            "com.example.mareu.EXTRA_START_HOUR";
-    public static final String EXTRA_END_HOUR =
-            "com.example.mareu.EXTRA_END_HOUR";
-
-    public static final String EXTRA_PARTICIPANTS =
-            "com.example.mareu.EXTRA_PARTICIPANTS";
-
-    private EditText editTextPlace;
+    private Button btnSelectRoom;
+    private String selectedRoom = "";
     private EditText editTextSubject;
     private TextView textStartHour;
     private TextView textEndHour;
     private Button setStartHourBtn;
     private Button setEndHourBtn;
     private Button btnAddParticipant;
-    private FloatingActionButton btnSaveMeeting;
-
     private RecyclerView recyclerViewAddParticipants;
     private ParticipantAdapter participantAdapter;
 
-    private FloatingActionButton btnFilter;
-
     List<String> participants = new ArrayList<>();
+    List<Meeting> allMeetings;
 
     private long startTime;
-
     private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_meeting);
+        meetingViewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
+
+        meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
+            @Override
+            public void onChanged(List<Meeting> meetings) {
+            allMeetings = meetings;
+            }
+        });
 
         recyclerViewAddParticipants = findViewById(R.id.recyclerViewAddParticipants);
         recyclerViewAddParticipants.setLayoutManager(new LinearLayoutManager(this));
-
         Toolbar toolbar = findViewById(R.id.save_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
-
-
-        editTextPlace = findViewById(R.id.edit_text_place);
+        btnSelectRoom = findViewById(R.id.btn_select_room);
         editTextSubject = findViewById(R.id.edit_text_subject);
         textStartHour = findViewById(R.id.edit_text_start_hour);
         textEndHour = findViewById(R.id.edit_text_end_hour);
-
         setStartHourBtn = findViewById(R.id.set_start_hour_btn);
         setEndHourBtn = findViewById(R.id.set_end_hour_btn);
         btnAddParticipant = findViewById(R.id.btn_add_participant);
+        btnSelectRoom.setEnabled(false);
+
+        btnSelectRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRoomListDialog();
+            }
+        });
 
         textStartHour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +133,42 @@ public class AddMeeting extends AppCompatActivity {
         });
     }
 
+    private void showRoomListDialog() {
+        long startTime = this.startTime;
+        long endTime = this.endTime;
+
+        List<String> availableRooms = getAvailableRooms(startTime, endTime);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Room");
+
+        final String[] roomOptions = availableRooms.toArray(new String[0]);
+
+        builder.setItems(roomOptions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedRoom =  roomOptions[which];
+                btnSelectRoom.setText(roomOptions[which]);
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private List<String> getAvailableRooms(long startTime, long endTime) {
+        List<String> allRooms = Arrays.asList("Room 1", "Room 2", "Room 3", "Room 4");
+
+        List<String> availableRooms = new ArrayList<>(allRooms);
+
+                for (Meeting meeting : allMeetings) {
+                    long meetingStartTime = meeting.getStartMeetingHour();
+                    long meetingEndTime = meeting.getEndMeetingHour();
+                    if (!(endTime <= meetingStartTime || startTime >= meetingEndTime)) {
+                        availableRooms.remove("Room " + meeting.getMeetingPlace());
+                    }
+                }
+        return availableRooms;
+    }
+
 
 
     private void openTimePickerDialog(String tag){
@@ -152,6 +191,13 @@ public class AddMeeting extends AppCompatActivity {
                     endTime = convertToMillis(hourOfDay, minute);
                     textEndHour.setText(formatTime(hourOfDay, minute));
                 }
+
+                if(startTime < endTime){
+                    btnSelectRoom.setEnabled(true);
+                }
+                else if(endTime > 0){
+                    Toast.makeText(getApplicationContext(), "Start time cannot be before end time.", Toast.LENGTH_LONG).show();
+                }
             }
 
             private long convertToMillis(int hourOfDay, int minute) {
@@ -164,33 +210,18 @@ public class AddMeeting extends AppCompatActivity {
             }
 
             private String formatTime(int hourOfDay, int minute) {
+                String hourString = (hourOfDay < 10) ? "0" + hourOfDay : String.valueOf(hourOfDay);
                 String minuteString = (minute < 10) ? "0" + minute : String.valueOf(minute);
-                return hourOfDay + ":" + minuteString;
+                return hourString + ":" + minuteString;
             }
+
         },hour,min, true);
         myTimePicker.show();
-    }
-    private boolean isRoomAvailable(String room, long startTime, long endTime){
-        // ici c'est les valeurs de la salle a sauvegarder :
-        Log.d("debug-take", "a sauvegarder : " +" salle : " + room + " start : " + startTime + " end : " + endTime);
-        //verifier si une salle est déja occupée
-        meetingViewModel = new ViewModelProvider(this).get(MeetingViewModel.class);
-        meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
-            @Override
-            public void onChanged(List<Meeting> meetings) {
-                for (Meeting meeting : meetings) {
-                    // ici j'obtien les infos des salles deja en BDD
-                    Log.d("debug-take", String.valueOf(meeting.getMeetingPlace()));
-                }
-            }
-        });
-        return false;
     }
 
     private void showAddParticipantDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Ajouter un participant");
-        // Créez une vue personnalisée pour la boîte de dialogue
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_participant, null);
         EditText editTextEmail = view.findViewById(R.id.edit_text_email);
         builder.setView(view);
@@ -207,9 +238,7 @@ public class AddMeeting extends AppCompatActivity {
                 } else {
                     Toast.makeText(AddMeeting.this, "invalid e-mail", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -221,12 +250,9 @@ public class AddMeeting extends AppCompatActivity {
         dialog.show();
     }
 
-
-
-
     private void clearFocusInput() {
         editTextSubject.clearFocus();
-        editTextPlace.clearFocus();
+
     }
 
     public void goBack(View view) {
@@ -234,20 +260,36 @@ public class AddMeeting extends AppCompatActivity {
     }
 
     public void saveMeeting(View view){
+        String place = "";
         String subject = editTextSubject.getText().toString();
-        String place = editTextPlace.getText().toString();
+        if(selectedRoom != "") place = selectedRoom.substring(5);
         long startHour = startTime;
         long endHour = endTime;
 
+        if (subject.trim().isEmpty()) {
+            Toast.makeText(this, "Please enter the subject of the meeting.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        //verifier que l'heure de fin est bien apres l'heure de début
-        if(startTime > endTime) {
-            Toast.makeText(getApplicationContext(), "L'heure de fin doit être postérieure à l'heure de début", Toast.LENGTH_SHORT).show();
-        } else {
-            if(subject.trim().isEmpty() || place.trim().isEmpty()){
-                Toast.makeText(this, "Tout les champs doivent être remplis", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        if (startHour == 0 || endHour == 0 || endHour < startHour) {
+            Toast.makeText(this, "Please enter valid hours.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (place.trim().isEmpty()) {
+            Toast.makeText(this, "Please select a correct meeting room.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (participants.isEmpty()) {
+            Toast.makeText(this, "The list of participants is empty.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(endTime < startTime){
+            Toast.makeText(this, "Start time cannot be before end time.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
             Intent data = new Intent();
             data.putExtra(EXTRA_SUBJECT, subject);
@@ -256,12 +298,8 @@ public class AddMeeting extends AppCompatActivity {
             data.putExtra(EXTRA_END_HOUR, String.valueOf(endHour));
             data.putExtra(EXTRA_PARTICIPANTS, String.valueOf(participants));
 
-
-            Log.d("debug-db-save", subject + "   " + place + "   " + startHour + "   " + endHour);
-
             setResult(RESULT_OK, data);
             finish();
         }
-    }
 }
 

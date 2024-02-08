@@ -20,7 +20,7 @@
                 android:id="@+id/detail_meeting_subject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="80dp"
                 android:text="Meeting Name"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.mareu.data.MeetingViewModel;
@@ -27,11 +29,17 @@ import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.model.Meeting;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final int ADD_MEETING_REQUEST = 1;
     private MeetingViewModel meetingViewModel;
+    private EditText editTextSearch;
 
     private MeetingAdapter adapter;
     ActivityMainBinding binding;
@@ -73,19 +81,19 @@ public class MainActivity extends AppCompatActivity {
         meetingViewModel.getAllMeetings().observe(this, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(List<Meeting> meetings) {
-                Log.d("see_meetings", meetings.toString());
-                //Collections.sort(meetings, new Comparator<Meeting>() {
-                  //  @Override
-                  //  public int compare(Meeting meeting1, Meeting meeting2) {
-                  //      return meeting1.getStartMeetingHour().compareTo(meeting2.getStartMeetingHour());
-                    //}
-                //});
-                //update recyclerview
+                Collections.sort(meetings, new Comparator<Meeting>() {
+                    @Override
+                    public int compare(Meeting meeting1, Meeting meeting2) {
+                        return Long.compare(meeting1.getStartMeetingHour(), meeting2.getStartMeetingHour());
+                    }
+                });
+
+                for (Meeting meeting : meetings) {
+                    Log.d("Meeting", meeting.toString());
+                }
+
                 adapter.setMeetings(meetings);
-
             }
-
-            public MeetingAdapter test = adapter;
         });
     }
 
@@ -94,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setMessage("Souhaitez-vous vraiment quitter l'application ?")
                 .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        finish(); // Ferme l'activité (et l'application si c'est la seule activité)
+                        finish();
                     }
                 })
                 .setNegativeButton("Non", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss(); // Ferme la boîte de dialogue
+                        dialog.dismiss();
                     }
                 });
         builder.create().show();
@@ -107,21 +115,46 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchFor(View view){
         showSearchForDialog();
-
-
     }
+
+    public void resetFilter(View view){
+        adapter.getFilter().filter("");
+    }
+
+    public void generateMeetings(View view) {
+        meetingViewModel.deleteAllMeetings();
+
+        List<Meeting> meetings = new ArrayList<>();
+
+        meetings.add(new Meeting(1642591200000L, 1642598400000L, "8", "Dev talk", new ArrayList<>(Arrays.asList("test@gmail.com", "test2@gmail.com", "test3@gmail.com")).toString()));
+        meetings.add(new Meeting(1642598400000L, 1642605600000L, "3", "Design meeting", new ArrayList<>(Arrays.asList("alice@gmail.com", "bob@gmail.com")).toString()));
+        meetings.add(new Meeting(1642605600000L, 1642612800000L, "3", "Project review", new ArrayList<>(Arrays.asList("charlie@gmail.com", "david@gmail.com", "emma@gmail.com")).toString()));
+        meetings.add(new Meeting(1642612800000L, 1642620000000L, "1", "Team brainstorming", new ArrayList<>(Arrays.asList("frank@gmail.com", "grace@gmail.com")).toString()));
+
+        for (Meeting meeting : meetings) {
+            meetingViewModel.insert(meeting);
+        }
+    }
+
+
 
     private void showSearchForDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_search, null);
 
         Spinner spinnerSearchType = view.findViewById(R.id.spinner_search_type);
-        EditText editTextSearch = view.findViewById(R.id.edit_text_searchFor);
+        editTextSearch = view.findViewById(R.id.edit_text_searchFor);
         spinnerSearchType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(position == 1) editTextSearch.setInputType(InputType.TYPE_CLASS_NUMBER);
-                else editTextSearch.setInputType(InputType.TYPE_CLASS_TEXT);
+                if (position == 1) {
+                    editTextSearch.setInputType(InputType.TYPE_CLASS_NUMBER);
+                } else if (position == 3 || position == 4) {
+                    editTextSearch.setInputType(InputType.TYPE_NULL);
+                    showTimePicker();
+                } else {
+                    editTextSearch.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
@@ -149,10 +182,20 @@ public class MainActivity extends AppCompatActivity {
                     adapter.getFilter().filter(searchText);
                 }
 
+                if (selectedPosition.getSelectedItem().equals("Participant")) {
+                    adapter.searchForType(2);
+                    adapter.getFilter().filter(searchText);
+                }
 
+                if (selectedPosition.getSelectedItem().equals("Start at")) {
+                    adapter.searchForType(3);
+                    adapter.getFilter().filter(searchText);
+                }
 
-
-
+                if (selectedPosition.getSelectedItem().equals("End at")) {
+                    adapter.searchForType(4);
+                    adapter.getFilter().filter(searchText);
+                }
 
             }
         });
@@ -168,6 +211,20 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void showTimePicker() {
+        editTextSearch.requestFocus();
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                editTextSearch.setText(selectedTime);
+            }
+        }, 0, 0, true);
+        timePickerDialog.show();
+    }
+
 
 
     @Override
@@ -192,3 +249,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+//TODO : le filtrage par plage d'heure (afficher toutes les reunions dont le début et dans cette plage d'heure) (OK)
+//TODO : faire le systeme de tri (OK)
+//TODO : mettre en place l'indicateur coloré en face de chaque réunion (OK)
+//TODO : finir la validation des données (OK)
+//TODO : voir pour l'accéssibilité
+//TODO : JAVADOC
+//TODO : définir les fonctionalités et écrire les tests
+//TODO : faire le PowerPoint de présentation

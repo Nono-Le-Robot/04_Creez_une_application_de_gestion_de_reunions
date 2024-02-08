@@ -33,7 +33,7 @@
         android:background="?attr/colorPrimary">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/save_btn"
+            android:id="@+id/save_btn_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
