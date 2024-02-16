@@ -173,17 +173,18 @@ public class AddMeeting extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
-        //TODO : verifier qu'il y a une sécurité si on ajoute une nouvelle réunion
+
         TimePickerDialog myTimePicker;
         myTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                long selectedTime = convertToMillis(hourOfDay, minute);
                 if (tag.equals("start")){
-                    startTime = convertToMillis(hourOfDay, minute);
+                    startTime = selectedTime;
                     textStartHour.setText(formatTime(hourOfDay, minute));
                 }
                 if (tag.equals("end")){
-                    endTime = convertToMillis(hourOfDay, minute);
+                    endTime = selectedTime;
                     textEndHour.setText(formatTime(hourOfDay, minute));
                 }
 
@@ -211,6 +212,7 @@ public class AddMeeting extends AppCompatActivity {
             }
 
         },hour,min, true);
+
         myTimePicker.show();
     }
 

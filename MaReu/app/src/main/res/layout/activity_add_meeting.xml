@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/add_actvity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -130,13 +131,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="4"
-                tools:listitem="@layout/participant_item" />
+                tools:listitem="@layout/participant_item"
+                android:layout_marginBottom="20dp"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_save_meeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_save"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:outlineAmbientShadowColor="@color/white"
+                android:outlineSpotShadowColor="@color/white"
+                android:onClick="saveMeeting"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 
 
+
+
     </androidx.core.widget.NestedScrollView>
     <include layout="@layout/toolbar_layout_save" />
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

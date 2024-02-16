@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="387eae03-c4b3-4649-8f4a-298b1015482d" name="Changes" comment="" />
+    <list default="true" id="387eae03-c4b3-4649-8f4a-298b1015482d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/MaReu/.idea/deploymentTargetDropDown.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/.idea/deploymentTargetDropDown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/app/src/androidTest/java/com/example/mareu/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/app/src/androidTest/java/com/example/mareu/ExampleInstrumentedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/app/src/main/java/com/example/mareu/data/MeetingDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/app/src/main/java/com/example/mareu/data/MeetingDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/app/src/main/res/layout/activity_add_meeting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/app/src/main/res/layout/activity_add_meeting.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MaReu/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MaReu/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,7 +32,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/Users/renaudsannier/Desktop/DEV/Openclassroom/04_Creez_une_application_de_gestion_de_reunions"
+    "last_opened_file_path": "C:/Users/Nono/Desktop/DEV/TP_openclassroom/Android/04_Creez_une_application_de_gestion_de_reunions"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
