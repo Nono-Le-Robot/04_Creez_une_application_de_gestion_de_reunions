@@ -47,12 +47,10 @@ public abstract class MeetingDatabase extends RoomDatabase {
 
         @Override
         protected  Void doInBackground(Void... voids){
-
             meetingDao.insert(new Meeting( 346345645,34435345,"444","Marketing", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
             meetingDao.insert(new Meeting( 435634545,345634456,"37","Weekly standup", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
             meetingDao.insert(new Meeting( 456363456,456363456,"99","Review code", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
             meetingDao.insert(new Meeting( 344563456,343456345, "669","Talk about buisiness", new ArrayList<>(Arrays.asList("test@gmail.com","test2@gmail.com","test3@gmail.com")).toString()));
-
             return null;
         }
     }

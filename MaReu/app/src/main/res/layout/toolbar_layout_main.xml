@@ -50,6 +50,25 @@
               android:onClick="resetFilter"
               />
 
+       <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/generer_meetings_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/reset_btn"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_reset"
+            app:tint="#FFFFFF"
+            app:backgroundTint="@android:color/transparent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:rippleColor="@android:color/transparent"
+            android:contentDescription="Filter"
+            android:outlineAmbientShadowColor="@color/white"
+            android:outlineSpotShadowColor="@color/white"
+            android:onClick="generateMeetings"
+            />
+
+
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/search_btn"

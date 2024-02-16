@@ -88,10 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                for (Meeting meeting : meetings) {
-                    Log.d("Meeting", meeting.toString());
-                }
-
                 adapter.setMeetings(meetings);
             }
         });
@@ -250,11 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-//TODO : le filtrage par plage d'heure (afficher toutes les reunions dont le début et dans cette plage d'heure) (OK)
-//TODO : faire le systeme de tri (OK)
-//TODO : mettre en place l'indicateur coloré en face de chaque réunion (OK)
-//TODO : finir la validation des données (OK)
 //TODO : voir pour l'accéssibilité
-//TODO : JAVADOC
 //TODO : définir les fonctionalités et écrire les tests
+//TODO : JAVADOC
 //TODO : faire le PowerPoint de présentation

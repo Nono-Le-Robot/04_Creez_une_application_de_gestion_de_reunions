@@ -155,8 +155,7 @@ public class AddMeeting extends AppCompatActivity {
     }
 
     private List<String> getAvailableRooms(long startTime, long endTime) {
-        List<String> allRooms = Arrays.asList("Room 1", "Room 2", "Room 3", "Room 4");
-
+        List<String> allRooms = Arrays.asList("Room 1", "Room 2", "Room 3", "Room 4", "Room 5", "Room 6", "Room 7", "Room 8", "Room 9", "Room 10");
         List<String> availableRooms = new ArrayList<>(allRooms);
 
                 for (Meeting meeting : allMeetings) {
@@ -169,17 +168,13 @@ public class AddMeeting extends AppCompatActivity {
         return availableRooms;
     }
 
-
-
     private void openTimePickerDialog(String tag){
         clearFocusInput();
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         //TODO : verifier qu'il y a une sécurité si on ajoute une nouvelle réunion
-
         TimePickerDialog myTimePicker;
-
         myTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -290,16 +285,13 @@ public class AddMeeting extends AppCompatActivity {
             Toast.makeText(this, "Start time cannot be before end time.", Toast.LENGTH_SHORT).show();
             return;
         }
-
             Intent data = new Intent();
             data.putExtra(EXTRA_SUBJECT, subject);
             data.putExtra(EXTRA_PLACE, place);
             data.putExtra(EXTRA_START_HOUR, String.valueOf(startHour));
             data.putExtra(EXTRA_END_HOUR, String.valueOf(endHour));
             data.putExtra(EXTRA_PARTICIPANTS, String.valueOf(participants));
-
             setResult(RESULT_OK, data);
             finish();
         }
 }
-
