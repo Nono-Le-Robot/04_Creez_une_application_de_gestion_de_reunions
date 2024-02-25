@@ -38,29 +38,32 @@ dependencies {
     def room_version = "2.5.0"
 
     //room
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:2.6.1"
+    annotationProcessor "androidx.room:room-compiler:2.6.1"
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
     // ViewModel utilities for Compose
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
 
     // Les bibliothèques nécessaires pour le projet
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // UNIT TEST
-    testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:java-hamcrest:2.0.0.0'
+    testImplementation "androidx.test:core:1.5.0"
+    testImplementation "androidx.room:room-testing:2.6.1"
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.robolectric:robolectric:4.7.3"
     // INSTRUMENTATION TEST
-    androidTestImplementation 'androidx.test:rules:1.4.0'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 }

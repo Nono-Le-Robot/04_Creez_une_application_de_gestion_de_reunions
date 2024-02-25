@@ -125,7 +125,7 @@ public class MaReuAppTest {
                         new DeleteViewAction()));
 
         try {
-            Thread.sleep(1000); // Fait une pause de 2 secondes
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -14,7 +14,7 @@ import com.example.mareu.model.Meeting;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Database(entities = {Meeting.class} ,version = 1)
+@Database(entities = {Meeting.class} ,version = 1, exportSchema = false)
 public abstract class MeetingDatabase extends RoomDatabase {
     private static MeetingDatabase instance;
     public abstract MeetingDao meetingDao();
