@@ -1,4 +1,4 @@
-package com.example.mareu;
+package com.example.mareu.data;
 
 import android.view.View;
 import android.widget.TimePicker;
@@ -37,6 +37,8 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 import org.junit.runners.MethodSorters;
 
+import com.example.mareu.MainActivity;
+import com.example.mareu.R;
 import com.example.mareu.data.MeetingViewModel;
 import com.example.mareu.utils.DeleteViewAction;
 
@@ -60,7 +62,7 @@ public class MaReuAppTest {
 
     @Test
     public void test01_displayHomePageAndItemCorrectly(){
-        onView(withId(R.id.main_activity)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.main_activity)).check(matches(isDisplayed()));
         onView(withId(R.id.recycler_view)).check(matches(hasChildCount(4)));
     }
 

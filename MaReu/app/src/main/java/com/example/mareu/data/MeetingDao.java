@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface MeetingDao {
     @Insert
-    void insert(Meeting meeting);
+    long insert(Meeting meeting);
     @Update
     void update(Meeting meeting);
     @Delete
